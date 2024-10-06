@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>CRUD Application</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header>
+        <h1>CRUD Application</h1>
+        <p>A simple website to manage items</p>
+    </header>
+
+    <!-- Create Section -->
+    <section class="form-section">
+        <h2>Add New Item</h2>
+        <form id="crudForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" placeholder="Enter name" required><br><br>
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" placeholder="Enter description" required></textarea><br><br>
+
+            <button type="button" id="addBtn">Add Item</button>
+            
+        </form>
+    </section>
+    
+    <!-- Read/Display Section -->
+    <section class="list-section">
+        <h2>Item List</h2>
+        <ul id="itemList">
+            <!-- Items will be displayed here -->
+        </ul>
+    </section>
+
+    <!-- JavaScript for dynamic CRUD operations -->
+    <script>
+        const addBtn = document.getElementById('addBtn');
+        const itemList = document.getElementById('itemList');
+        const nameInput = document.getElementById('name');
+        const descriptionInput = document.getElementById('description');
+
+        addBtn.addEventListener('click', function() {
+            const itemName = nameInput.value;
+            const itemDescription = descriptionInput.value;
+
+            if (itemName && itemDescription) {
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <strong>Name:</strong> <span class="item-name">${itemName}</span><br>
+                    <strong>Description:</strong> <span class="item-description">${itemDescription}</span><br>
+                    <button class="editBtn">Edit</button>
+                    <button class="deleteBtn">Delete</button>
+                    <hr>
+                `;
+                itemList.appendChild(li);
+
+                // Clear inputs
+                nameInput.value = '';
+                descriptionInput.value = '';
+
+                // Edit item
+                li.querySelector('.editBtn').addEventListener('click', function() {
+                    const newName = prompt('Enter new name:', li.querySelector('.item-name').textContent);
+                    const newDescription = prompt('Enter new description:', li.querySelector('.item-description').textContent);
+                    
+                    if (newName) {
+                        li.querySelector('.item-name').textContent = newName;
+                    }
+                    if (newDescription) {
+                        li.querySelector('.item-description').textContent = newDescription;
+                    }
+                });
+
+                // Delete item
+                li.querySelector('.deleteBtn').addEventListener('click', function() {
+                    itemList.removeChild(li);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
